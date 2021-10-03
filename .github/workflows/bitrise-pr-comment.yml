@@ -14,5 +14,11 @@ jobs:
           echo "Comment on PR #${{ github.event.issue.pull_request.comments }}"
           echo "Comment on PR #${{ github.event.issue.pull_request.review_comments }}"
           echo "Comment on PR #${{ github.event.issue.pull_request.html }}"
-          echo "Comment on PR #${{ this }}"
+          echo "extra #${{ github.event_name }}"
+          echo "extra #${{ github.event.ref }}"
+          echo "extra #${{ github.event.description }}"
+          echo "extra #${{ github }}"
+          echo "extra #${{ github.event_name }}"
+          echo "extra #${{ github.issue }}"
+          echo "extra #${{ github.issue.title }}"
     
