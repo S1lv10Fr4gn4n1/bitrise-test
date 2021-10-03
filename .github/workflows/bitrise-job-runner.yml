@@ -1,9 +1,6 @@
-name: Bitrise-CI
+name: Bitrise-Manual
 
 on:
-  pull_request_review_comment:
-    types: [created]
-
   workflow_dispatch:
     inputs:
       branch:
@@ -24,10 +21,3 @@ jobs:
           WORKFLOW=${{ github.event.inputs.workflow }}
           curl https://app.bitrise.io/app/4c527551314ba218/build/start.json \
           --data '{"hook_info":{"type":"bitrise","build_trigger_token":"AfYFen-5OC3qNFFO23E8FA"}, "build_params":{"branch":"${BRANCH}","workflow_id":"${WORKFLOW}"},"triggered_by":"curl"}'  
-  
-  check_comment:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ github.event }}
-    
