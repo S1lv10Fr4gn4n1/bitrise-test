@@ -4,23 +4,23 @@ on:
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Person to greet'
+      branch:
+        description: 'Branch name'
         required: true
-        default: 'Mona the Octocat'
-      home:
-        description: 'location'
-        required: false
-        default: 'The Octoverse'
+        default: 'main'
+      workflow:
+        description: 'Workflow name'
+        required: true
+        default: 'pr-jobs'
 
 jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Hello ${{ github.event.inputs.name }}!"
-          echo "- in ${{ github.event.inputs.home }}!"
-
+          BRANCH=${{ github.event.inputs.branch }}
+          WORKFLOW=${{ github.event.inputs.workflow }}
+          curl https://app.bitrise.io/app/4c527551314ba218/build/start.json \
+          --data '{"hook_info":{"type":"bitrise","build_trigger_token":"AfYFen-5OC3qNFFO23E8FA"}, "build_params":{"branch":"${BRANCH}","workflow_id":"${WORKFLOW}"},"triggered_by":"curl"}'
