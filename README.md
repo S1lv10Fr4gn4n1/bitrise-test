@@ -1,3 +1,3 @@
 # bitrise-test
 
-test7
+test8
