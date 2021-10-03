@@ -9,5 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Comment on PR #${{ github.event.issue }}"
+          echo "Comment on PR #${{ github.event.issue.number }}"
+          echo "Comment on PR #${{ github.event.issue.pull_request.comments }}"
     
