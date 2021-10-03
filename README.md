@@ -1,3 +1,3 @@
 # bitrise-test
 
-test1
+test2
