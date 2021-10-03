@@ -1,0 +1,2 @@
+- name: Bitrise Job Runner
+  uses: Open-Source-Contrib/bitrise-trigger-action@1.0.4
