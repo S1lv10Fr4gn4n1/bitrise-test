@@ -1,8 +1,8 @@
 name: Bitrise-CI
 
 on:
-  pull_request:
-    branches: [ main ]
+  pull_request_review_comment:
+    types: [created]
 
   workflow_dispatch:
     inputs:
@@ -16,11 +16,18 @@ on:
         default: 'pr-jobs'
 
 jobs:
-  say_hello:
+  manual_workflow:
     runs-on: ubuntu-latest
     steps:
       - run: |
           BRANCH=${{ github.event.inputs.branch }}
           WORKFLOW=${{ github.event.inputs.workflow }}
           curl https://app.bitrise.io/app/4c527551314ba218/build/start.json \
-          --data '{"hook_info":{"type":"bitrise","build_trigger_token":"AfYFen-5OC3qNFFO23E8FA"}, "build_params":{"branch":"${BRANCH}","workflow_id":"${WORKFLOW}"},"triggered_by":"curl"}'
+          --data '{"hook_info":{"type":"bitrise","build_trigger_token":"AfYFen-5OC3qNFFO23E8FA"}, "build_params":{"branch":"${BRANCH}","workflow_id":"${WORKFLOW}"},"triggered_by":"curl"}'  
+  
+  check_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ github.event }}
+    
