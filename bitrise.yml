@@ -3,8 +3,6 @@ format_version: '11'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: android
 trigger_map:
-- push_branch: main
-  workflow: build-app
 - pull_request_source_branch: "*"
   workflow: pr-jobs
 workflows:
@@ -37,7 +35,7 @@ workflows:
             test-01
             test-02
             test-03
-        - access_token: "ACCESS_TOKEN"
+        - access_token: "$ACCESS_TOKEN"
     description: Trigger PR jobs/flows
   primary:
     steps:
