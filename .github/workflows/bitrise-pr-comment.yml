@@ -10,5 +10,5 @@ jobs:
     steps:
       - run: |
           echo "Comment on PR #${{ github.event.issue.number }}"
-          echo "Comment on PR #${{ github.event.issue.pull_request.comments }}"
+          echo "Comment on PR #${{ github.event.issue.pull_request }}"
     
