@@ -19,5 +19,8 @@ jobs:
       - run: |
           BRANCH=${{ github.event.inputs.branch }}
           WORKFLOW=${{ github.event.inputs.workflow }}
-          curl https://app.bitrise.io/app/4c527551314ba218/build/start.json \
-          --data '{"hook_info":{"type":"bitrise","build_trigger_token":"AfYFen-5OC3qNFFO23E8FA"}, "build_params":{"branch":"${BRANCH}","workflow_id":"${WORKFLOW}"},"triggered_by":"curl"}'  
+          
+          # add to the GITHUB ENV
+          APP_SLUG=4c527551314ba218
+          BUILD_TRIGGER_TOKEN=AfYFen-5OC3qNFFO23E8FA
+          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
