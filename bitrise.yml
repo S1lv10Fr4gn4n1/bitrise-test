@@ -87,11 +87,11 @@ workflows:
     description: Run Gradle LintDebug
   test-01:
     steps:
-      - github-status@2:
-          inputs:
-            - status_identifier: Test-01
-            - set_specific_status: pending
-            - auth_token: $GITHUB_TOKEN
+#      - github-status@2:
+#          inputs:
+#            - status_identifier: Test-01
+#            - set_specific_status: pending
+#            - auth_token: $GITHUB_TOKEN
       - script@1:
           inputs:
             - content: |-
