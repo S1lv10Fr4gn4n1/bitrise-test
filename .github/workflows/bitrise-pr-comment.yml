@@ -1,0 +1,13 @@
+name: Bitrise-PR-comment
+
+on:
+  pull_request_review_comment:
+    types: [created]
+
+jobs:  
+  pr_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ github.event }}
+    
