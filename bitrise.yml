@@ -34,8 +34,9 @@ workflows:
     - build-router-start@0:
         inputs:
         - workflows: |-
-            unit-test
-            build-app
+            test-01
+            test-02
+            test-03
         - access_token: "$personal_access"
     description: Trigger PR jobs/flows
   primary:
@@ -84,6 +85,60 @@ workflows:
     - deploy-to-bitrise-io@2: {}
     - cache-push@2: {}
     description: Run Gradle LintDebug
+  test-01:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-01
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 01"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-01
+            - auth_token: $GITHUB_TOKEN
+  test-02:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-02
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 02"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-02
+            - auth_token: $GITHUB_TOKEN
+  test-03:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-03
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 03"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-03
+            - auth_token: $GITHUB_TOKEN
 app:
   envs:
   - opts:
