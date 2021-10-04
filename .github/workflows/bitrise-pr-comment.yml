@@ -20,17 +20,25 @@ jobs:
           echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
       - name: PR comment
         run: |
-          echo "PR number ${{ github.event.issue.number }}"
-          echo "PR Title ${{ github.event.issue.title }}"
-          echo "Event ${{ github.event_name }}"
-          echo "Comment ${{ github.event.comment.body }}"
-          echo "Branch ${{ github.event.issue.pull_request.url }}"    
-          echo "GITHUB_SHA ${GITHUB_SHA}"
-          echo "GITHUB_REF ${GITHUB_REF}"
-          echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
-          echo "branch ${{ steps.pr_data.outputs.branch }}"
-
-
-          # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
-          # BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
-          # curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
+          COMMENT=${{ github.event.comment.body }}
+          
+          WORKFLOW = ""
+          if [ "$COMMENT" = "run tests" ]; then
+            WORKFLOW="pr-jobs" 
+          elif [ "$COMMENT" = "make app" ]; then
+            WORKFLOW="build-app"
+          elif [ "$COMMENT" = "unit test" ]; then
+            WORKFLOW="unit-test"
+          fi
+          
+          # skip curl if workflow didn't match
+          if [ "$WORKFLOW" = "" ]; then
+            echo "Workflow not found"
+            exit 1
+          fi
+          
+          
+          BRANCH=${{ steps.pr_data.outputs.branch }}"
+          APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
+          BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
