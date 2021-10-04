@@ -18,7 +18,7 @@ jobs:
           echo "GITHUB_SHA ${GITHUB_SHA}"
           echo "GITHUB_REF ${GITHUB_REF}"
           echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
-         echo ::set-output name=branch::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+          echo $(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
           
           
           # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
