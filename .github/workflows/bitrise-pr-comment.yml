@@ -18,6 +18,7 @@ jobs:
         id: pr_data
         run: |
           echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
+          echo "::set-output name=sha::${{ fromJson(steps.request.outputs.data).head.sha }}"
       - name: PR comment
         run: |
           COMMENT="${{ github.event.comment.body }}"
@@ -39,6 +40,7 @@ jobs:
           
           
           BRANCH="${{ steps.pr_data.outputs.branch }}"
+          HASH="${{ steps.pr_data.outputs.sha }}"
           APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
           BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
-          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${GITHUB_SHA}'"},"triggered_by":"curl"}'
+          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${HASH}'"},"triggered_by":"curl"}'
