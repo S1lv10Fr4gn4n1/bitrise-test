@@ -17,7 +17,7 @@ jobs:
       - name: Get PR informations
         id: pr_data
         run: |
-          echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
+          # echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
           echo "::set-output name=repo_name::${{ fromJson(steps.request.outputs.data).head.repo.full_name }}"
           echo "::set-output name=repo_clone_url::${{ fromJson(steps.request.outputs.data).head.repo.clone_url }}"
           echo "::set-output name=repo_ssh_url::${{ fromJson(steps.request.outputs.data).head.repo.ssh_url }}"
@@ -31,7 +31,7 @@ jobs:
           echo "GITHUB_SHA ${GITHUB_SHA}"
           echo "GITHUB_REF ${GITHUB_REF}"
           echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
-          echo "branch ${{ steps.pr_data.outputs.branch }}"
+          echo "branch ${{ steps.pr_data.outputs.repo_name }}"
 
 
           # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
