@@ -1,0 +1,25 @@
+name: Bitrise-Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
+        default: 'main'
+      workflow:
+        description: 'Workflow name'
+        required: true
+        default: 'pr-jobs'
+
+jobs:
+  manual_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          BRANCH=${{ github.event.inputs.branch }}
+          WORKFLOW=${{ github.event.inputs.workflow }}
+          
+          APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
+          BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'

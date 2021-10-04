@@ -1,0 +1,150 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: android
+trigger_map:
+- pull_request_source_branch: "*"
+  workflow: pr-jobs
+workflows:
+  build-app:
+    description: Build Debug Apk
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - script@1:
+        title: Do anything with Script step
+    - install-missing-android-tools@2:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-build@1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - sign-apk@1:
+        run_if: '{{getenv "BITRISEIO_ANDROID_KEYSTORE_URL" | ne ""}}'
+    - deploy-to-bitrise-io@2: {}
+    - cache-push@2: {}
+  pr-jobs:
+    steps:
+    - build-router-start@0:
+        inputs:
+        - workflows: |-
+            test-01
+            test-02
+            test-03
+        - access_token: "$ACCESS_TOKEN"
+    description: Trigger PR jobs/flows
+  primary:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - script@1:
+        title: Do anything with Script step
+    - install-missing-android-tools@2:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-lint@0:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - variant: "$VARIANT"
+    - android-unit-test@1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - variant: "$VARIANT"
+    - deploy-to-bitrise-io@2: {}
+    - cache-push@2: {}
+    description: Run Lint, Unit tests
+  unit-test:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - install-missing-android-tools@3.0:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - script@1:
+        title: Do anything with Script step
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+
+            # write your script here
+            ./gradlew clean lintDebug
+    - deploy-to-bitrise-io@2: {}
+    - cache-push@2: {}
+    description: Run Gradle LintDebug
+  test-01:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-01
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 01"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-01
+            - auth_token: $GITHUB_TOKEN
+  test-02:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-02
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 02"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-02
+            - auth_token: $GITHUB_TOKEN
+  test-03:
+    steps:
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-03
+            - set_specific_status: pending
+            - auth_token: $GITHUB_TOKEN
+      - script@1:
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -e
+                set -x
+                echo "Test 03"
+      - github-status@2:
+          inputs:
+            - status_identifier: Test-03
+            - auth_token: $GITHUB_TOKEN
+app:
+  envs:
+  - opts:
+      is_expand: false
+    PROJECT_LOCATION: "."
+  - opts:
+      is_expand: false
+    MODULE: app
+  - opts:
+      is_expand: false
+    VARIANT: ''
