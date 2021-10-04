@@ -28,7 +28,7 @@ jobs:
           echo "GITHUB_SHA ${GITHUB_SHA}"
           echo "GITHUB_REF ${GITHUB_REF}"
           echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
-          echo "branch ${{ steps.pr_data.outputs.repo_name }}"
+          echo "branch ${{ steps.pr_data.outputs.branch }}"
 
 
           # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
