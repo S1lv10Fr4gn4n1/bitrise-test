@@ -4,12 +4,21 @@ on: issue_comment
 jobs:  
   pr_commented:
     # This job only runs for pull request comments
-    name: PR comment
-#     if: ${{ github.event.issue.pull_request }}
     if: github.event_name == 'issue_comment'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
     steps:
-      - run: |
+      - name: GitHub API Request
+        if: steps.check.outputs.triggered == 'true'
+        id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: PR comment
+        run: |
+          echo "branch ${{ fromJson(steps.request.outputs.data).head.ref }}"
           echo "PR number ${{ github.event.issue.number }}"
           echo "PR Title ${{ github.event.issue.title }}"
           echo "Event ${{ github.event_name }}"
@@ -19,8 +28,8 @@ jobs:
           echo "GITHUB_REF ${GITHUB_REF}"
           echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
           echo $(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
-          
-          
+
+
           # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
           # BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
           # curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
