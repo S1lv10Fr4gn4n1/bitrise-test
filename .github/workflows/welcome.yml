@@ -3,20 +3,25 @@
 name: Welcome-PR
 
 # Controls when the workflow will run
-on: [pull_request_target]
+on: 
+  pull_request:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: First interaction
-        uses: actions/first-interaction@v1
+     - uses: actions/github-script@v3
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: |
-            👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow using the following commands
-            `run tests` to run `pr-jobs`
-            `make app` to run `build-app`
-            `unit test` to run `unit-test`
-
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: |
+               👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow using the following commands
+                `run tests` to run `pr-jobs`
+                `make app` to run `build-app`
+                `unit test` to run `unit-test`
+            })
