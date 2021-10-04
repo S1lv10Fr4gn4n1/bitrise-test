@@ -20,7 +20,7 @@ jobs:
           echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
       - name: PR comment
         run: |
-          COMMENT=${{ github.event.comment.body }}
+          COMMENT="${{ github.event.comment.body }}"
           
           WORKFLOW = ""
           if [ "$COMMENT" = "run tests" ]; then
