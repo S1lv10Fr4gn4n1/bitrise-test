@@ -14,10 +14,11 @@ jobs:
           echo "PR Title ${{ github.event.issue.title }}"
           echo "Event ${{ github.event_name }}"
           echo "Comment ${{ github.event.comment.body }}"
-          echo "Branch ${{ github.event.pull_request.head.ref }}"    
+          echo "Branch ${{ github.event.issue.pull_request.url }}"    
           echo "GITHUB_SHA ${GITHUB_SHA}"
           echo "GITHUB_REF ${GITHUB_REF}"
           echo "GITHUB_HEAD_REF ${GITHUB_HEAD_REF}"
+         echo ::set-output name=branch::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
           
           
           # APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
