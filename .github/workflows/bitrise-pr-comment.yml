@@ -33,14 +33,12 @@ jobs:
           fi
           
           # skip curl if workflow didn't match
-          if [ "$WORKFLOW" = "" ]; then
+          if [ "$WORKFLOW" != "" ]; then
+            BRANCH="${{ steps.pr_data.outputs.branch }}"
+            HASH="${{ steps.pr_data.outputs.sha }}"
+            APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
+            BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+            curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${HASH}'"},"triggered_by":"curl"}'
+          else
             echo "Workflow not found"
-            exit 1
           fi
-          
-          
-          BRANCH="${{ steps.pr_data.outputs.branch }}"
-          HASH="${{ steps.pr_data.outputs.sha }}"
-          APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
-          BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
-          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${HASH}'"},"triggered_by":"curl"}'
