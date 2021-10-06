@@ -1,3 +1,3 @@
 # bitrise-test
 
-test35
+test36
