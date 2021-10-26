@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
-        id: set-result
+        id: github-result
         with:
           script: |
             const result = await github.request("${{ github.event.issue.pull_request.url }}")
@@ -16,51 +16,28 @@ jobs:
           result-encoding: json
       
       - name: Get result
+        id: pr-result
         run: |
-          echo "${{fromJson(steps.set-result.outputs.result).ref}}"
-          echo "${{fromJson(steps.set-result.outputs.result).sha}}"
-#       - name: Curl Github API Request
-#         id: curl_data
-#         run: |
-#           pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
-#             ${{ github.event.issue.pull_request.url }} | jq '.head')
-#           echo "::set-output name=json::${{ fromJson(pr_json) }}"
-#       - uses: actions/github-script@v5
-#         id: pr_head
-#         with:
-#           github-token: ${{secrets.GITHUB_TOKEN}}
-#           result-encoding: string
-#           script: return "I will be string (not JSON) encoded!"
-#           const result = await github.request("${{ github.event.issue.pull_request.url }}")
-#           return result.data.head
+          echo "::set-output name=branch::${{fromJson(steps.github-result.outputs.result).ref}}"
+          echo "::set-output name=sha::${{fromJson(steps.github-result.outputs.result).sha}}"
 
-#       - name: Get PR informations
-#         id: pr_data
-#         run: |
-#           echo ">>>>> test"
-#           echo ">>>>> ${{ steps.pr_head.outputs.result }}"
-#           # echo ">>>> ${{ fromJson(steps.pr_head.outputs.result) }}"
-
-#           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
-#           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
-
-#       - name: PR comment
-#         run: |
-#           COMMENT="${{ github.event.comment.body }}"
+      - name: PR comment
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
           
-#           WORKFLOW=""
-#           if [ "$COMMENT" = "run tests" ]; then
-#             WORKFLOW="pr-jobs" 
-#           elif [ "$COMMENT" = "make app" ]; then
-#             WORKFLOW="build-app"
-#           elif [ "$COMMENT" = "unit test" ]; then
-#             WORKFLOW="unit-test"
-#           fi
+          WORKFLOW=""
+          if [ "$COMMENT" = "run tests" ]; then
+            WORKFLOW="pr-jobs" 
+          elif [ "$COMMENT" = "make app" ]; then
+            WORKFLOW="build-app"
+          elif [ "$COMMENT" = "unit test" ]; then
+            WORKFLOW="unit-test"
+          fi
           
-#           # for tests
-#           BRANCH="${{ steps.pr_data.outputs.branch }}"
-#           HASH="${{ steps.pr_data.outputs.sha }}"
-#           echo "${BRANCH} ${HASH}"
+          # for tests
+          BRANCH="${{ steps.pr-result.outputs.branch }}"
+          HASH="${{ steps.pr-result.outputs.sha }}"
+          echo "${BRANCH} ${HASH}"
             
 #           # skip curl if workflow didn't match
 #           if [ "$WORKFLOW" != "" ]; then
