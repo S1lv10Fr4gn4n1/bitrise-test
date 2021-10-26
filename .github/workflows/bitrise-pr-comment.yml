@@ -18,13 +18,14 @@ jobs:
       - name: Curl Github API Request
         id: curl_response
         run: |
-          curl -H "Accept: application/vnd.github.v3+json" \
-            ${{ github.event.issue.pull_request.url }} | jq '.head'
+          curl_pr_data=$(curl -H "Accept: application/vnd.github.v3+json" \
+            ${{ github.event.issue.pull_request.url }} | jq '.head')
+          echo "::set-output name=branch::${{ fromJson(curl_pr_data) }}"
       - name: Get PR informations
         id: pr_data
         run: |
-          echo "::set-output name=branch::${{ fromJson(steps.curl_response).ref }}"
-          echo "::set-output name=sha::${{ fromJson(steps.curl_response).sha }}"
+          echo "::set-output name=branch::${{ fromJson(steps.curl_response.outputs).ref }}"
+          echo "::set-output name=sha::${{ fromJson(steps.curl_response.outputs).sha }}"
       - name: PR comment
         run: |
           COMMENT="${{ github.event.comment.body }}"
