@@ -20,12 +20,12 @@ jobs:
         run: |
           pr_json=$(curl -H "Accept: application/vnd.github.v3+json" \
             ${{ github.event.issue.pull_request.url }} | jq '.head')
-          echo "::set-output name=pr::${{ fromJson(${pr_json}) }}"
+          echo "::set-output name=pr::${{ pr_json }}"
       - name: Get PR informations
         id: pr_data
         run: |
-          echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs).ref }}"
-          echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs).sha }}"
+          echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
+          echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
       - name: PR comment
         run: |
           COMMENT="${{ github.event.comment.body }}"
