@@ -12,40 +12,41 @@ jobs:
         run: |
           pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
             ${{ github.event.issue.pull_request.url }} | jq '.head')
-          echo "::set-output name=pr::${pr_json}"
+          echo "::set-output name=json::${pr_json}"
       - name: Get PR informations
         id: pr_data
         run: |
           echo ">>>>> test"
-          echo ">>>> ${{ steps.curl_data.outputs.pr }}"
+          echo ">>>> ${steps.curl_data.outputs.json}"
+          
           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
-      - name: PR comment
-        run: |
-          COMMENT="${{ github.event.comment.body }}"
+#       - name: PR comment
+#         run: |
+#           COMMENT="${{ github.event.comment.body }}"
           
-          WORKFLOW=""
-          if [ "$COMMENT" = "run tests" ]; then
-            WORKFLOW="pr-jobs" 
-          elif [ "$COMMENT" = "make app" ]; then
-            WORKFLOW="build-app"
-          elif [ "$COMMENT" = "unit test" ]; then
-            WORKFLOW="unit-test"
-          fi
+#           WORKFLOW=""
+#           if [ "$COMMENT" = "run tests" ]; then
+#             WORKFLOW="pr-jobs" 
+#           elif [ "$COMMENT" = "make app" ]; then
+#             WORKFLOW="build-app"
+#           elif [ "$COMMENT" = "unit test" ]; then
+#             WORKFLOW="unit-test"
+#           fi
           
-          # for tests
-          BRANCH="${{ steps.pr_data.outputs.branch }}"
-          HASH="${{ steps.pr_data.outputs.sha }}"
-          echo "${BRANCH} ${HASH}"
+#           # for tests
+#           BRANCH="${{ steps.pr_data.outputs.branch }}"
+#           HASH="${{ steps.pr_data.outputs.sha }}"
+#           echo "${BRANCH} ${HASH}"
             
-          # skip curl if workflow didn't match
-          if [ "$WORKFLOW" != "" ]; then
-            BRANCH="${{ steps.pr_data.outputs.branch }}"
-            HASH="${{ steps.pr_data.outputs.sha }}"
-            APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
-            BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
-            echo "${BRANCH} ${HASH}"
-            # curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${HASH}'"},"triggered_by":"curl"}'
-          else
-            echo "Workflow not found"
-          fi
+#           # skip curl if workflow didn't match
+#           if [ "$WORKFLOW" != "" ]; then
+#             BRANCH="${{ steps.pr_data.outputs.branch }}"
+#             HASH="${{ steps.pr_data.outputs.sha }}"
+#             APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
+#             BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+#             echo "${BRANCH} ${HASH}"
+#             # curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'","commit_hash":"'${HASH}'"},"triggered_by":"curl"}'
+#           else
+#             echo "Workflow not found"
+#           fi
