@@ -7,24 +7,17 @@ jobs:
     if: github.event_name == 'issue_comment'
     runs-on: ubuntu-latest
     steps:
-#       - name: Github API Request
-#         id: request
-#         uses: octokit/request-action@v2.0.2
-#         with:
-#           route: ${{ github.event.issue.pull_request.url }}
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Curl Github API Request
         id: curl_data
         run: |
-          pr_json=$(curl -H "Accept: application/vnd.github.v3+json" \
+          pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
             ${{ github.event.issue.pull_request.url }} | jq '.head')
           echo "::set-output name=pr::${pr_json}"
       - name: Get PR informations
         id: pr_data
         run: |
-          echo ">>>> ${{ fromJson(steps.curl_data.outputs.pr).ref }}"
+          echo ">>>>> test"
+          echo ">>>> ${{ steps.curl_data.outputs.pr }}"
           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
       - name: PR comment
