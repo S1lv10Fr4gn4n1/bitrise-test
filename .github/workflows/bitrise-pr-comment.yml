@@ -17,7 +17,8 @@ jobs:
       
       - name: Get result
         run: |
-          echo "${{steps.set-result.outputs.result}}"
+          echo "${{steps.set-result.outputs.result.ref}}"
+          echo "${{steps.set-result.outputs.result.sha}}"
 #       - name: Curl Github API Request
 #         id: curl_data
 #         run: |
