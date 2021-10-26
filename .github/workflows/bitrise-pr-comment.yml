@@ -7,20 +7,29 @@ jobs:
     if: github.event_name == 'issue_comment'
     runs-on: ubuntu-latest
     steps:
-      - name: Curl Github API Request
-        id: curl_data
-        run: |
-          pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
-            ${{ github.event.issue.pull_request.url }} | jq '.head')
-          echo "::set-output name=json::${{ fromJson(pr_json) }}"
-      - name: Get PR informations
-        id: pr_data
-        run: |
-          echo ">>>>> test"
-          # echo ">>>> ${steps.curl_data.outputs.json}"
+#       - name: Curl Github API Request
+#         id: curl_data
+#         run: |
+#           pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
+#             ${{ github.event.issue.pull_request.url }} | jq '.head')
+#           echo "::set-output name=json::${{ fromJson(pr_json) }}"
+      - name: Get PR info
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const pr_url = ${{ github.event.issue.pull_request.url }}
+            const result = await github.request(pr_url)
+            console.log(result)
+
+#       - name: Get PR informations
+#         id: pr_data
+#         run: |
+#           echo ">>>>> test"
+#           # echo ">>>> ${steps.curl_data.outputs.json}"
           
-          # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
-          # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
+#           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
+#           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
+
 #       - name: PR comment
 #         run: |
 #           COMMENT="${{ github.event.comment.body }}"
