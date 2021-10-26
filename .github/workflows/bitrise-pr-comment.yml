@@ -23,8 +23,8 @@ jobs:
       - name: Get PR informations
         id: pr_data
         run: |
-          echo "::set-output name=branch::${{ fromJson(steps.curl_response.data).head.ref }}"
-          echo "::set-output name=sha::${{ fromJson(steps.curl_response.data).head.sha }}"
+          echo "::set-output name=branch::${{ fromJson(steps.curl_response).ref }}"
+          echo "::set-output name=sha::${{ fromJson(steps.curl_response).sha }}"
       - name: PR comment
         run: |
           COMMENT="${{ github.event.comment.body }}"
