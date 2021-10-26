@@ -14,21 +14,21 @@ jobs:
 #             ${{ github.event.issue.pull_request.url }} | jq '.head')
 #           echo "::set-output name=json::${{ fromJson(pr_json) }}"
       - uses: actions/github-script@v5
+        id: pr_head
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const result = await github.request("${{ github.event.issue.pull_request.url }}")
-            console.log(result.data.head.ref)
-            console.log(result.data.head.sha)
+            return result.data.head
 
-#       - name: Get PR informations
-#         id: pr_data
-#         run: |
-#           echo ">>>>> test"
-#           # echo ">>>> ${steps.curl_data.outputs.json}"
+      - name: Get PR informations
+        id: pr_data
+        run: |
+          echo ">>>>> test"
+          echo ">>>> ${steps.pr_head.outputs}"
           
-#           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
-#           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
+          # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
+          # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
 
 #       - name: PR comment
 #         run: |
