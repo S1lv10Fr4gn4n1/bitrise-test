@@ -11,7 +11,8 @@ jobs:
         id: set-result
         with:
           script: |
-            return "Hello!"
+            const result = await github.request("${{ github.event.issue.pull_request.url }}")
+            return result.data.head
           result-encoding: string
       
       - name: Get result
