@@ -13,7 +13,7 @@ jobs:
 #           pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
 #             ${{ github.event.issue.pull_request.url }} | jq '.head')
 #           echo "::set-output name=json::${{ fromJson(pr_json) }}"
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
