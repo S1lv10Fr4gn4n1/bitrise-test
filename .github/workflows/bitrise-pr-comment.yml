@@ -7,30 +7,37 @@ jobs:
     if: github.event_name == 'issue_comment'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v5
+        id: set-result
+        with:
+          script: return "Hello!"
+          result-encoding: string
+      - name: Get result
+        run: echo "${{steps.set-result.outputs.result}}"
 #       - name: Curl Github API Request
 #         id: curl_data
 #         run: |
 #           pr_json=$(curl -s -H "Accept: application/vnd.github.v3+json" \
 #             ${{ github.event.issue.pull_request.url }} | jq '.head')
 #           echo "::set-output name=json::${{ fromJson(pr_json) }}"
-      - uses: actions/github-script@v5
-        id: pr_head
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: return "I will be string (not JSON) encoded!"
+#       - uses: actions/github-script@v5
+#         id: pr_head
+#         with:
+#           github-token: ${{secrets.GITHUB_TOKEN}}
+#           result-encoding: string
+#           script: return "I will be string (not JSON) encoded!"
 #           const result = await github.request("${{ github.event.issue.pull_request.url }}")
 #           return result.data.head
 
-      - name: Get PR informations
-        id: pr_data
-        run: |
-          echo ">>>>> test"
-          echo ">>>>> ${{ steps.pr_head.outputs.result }}"
-          # echo ">>>> ${{ fromJson(steps.pr_head.outputs.result) }}"
+#       - name: Get PR informations
+#         id: pr_data
+#         run: |
+#           echo ">>>>> test"
+#           echo ">>>>> ${{ steps.pr_head.outputs.result }}"
+#           # echo ">>>> ${{ fromJson(steps.pr_head.outputs.result) }}"
 
-          # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
-          # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
+#           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
+#           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
 
 #       - name: PR comment
 #         run: |
