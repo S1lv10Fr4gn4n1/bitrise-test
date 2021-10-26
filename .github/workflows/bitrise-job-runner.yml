@@ -16,10 +16,21 @@ jobs:
   manual_workflow:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          BRANCH=${{ github.event.inputs.branch }}
-          WORKFLOW=${{ github.event.inputs.workflow }}
+#       - run: |
+#           BRANCH=${{ github.event.inputs.branch }}
+#           WORKFLOW=${{ github.event.inputs.workflow }}
           
-          APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
-          BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
-          curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
+#           APP_SLUG=${{ secrets.BITRISE_APP_SLUG }}
+#           BUILD_TRIGGER_TOKEN=${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+#           curl https://app.bitrise.io/app/$APP_SLUG/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"'${BUILD_TRIGGER_TOKEN}'"}, "build_params":{"branch":"'${BRANCH}'","workflow_id":"'${WORKFLOW}'"},"triggered_by":"curl"}'
+
+      - uses: satak/webrequest-action@v1.2.4
+        with:
+#           url: ${{ github.event.issue.pull_request.url }}
+          url: "https://api.github.com/repos/S1lv10Fr4gn4n1/bitrise-test/pulls/19"
+          method: GET
+          payload: '{"name": "${{ env.MY_NAME }}"}'
+          headers: '{"Authentication": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
+      - run |
+          output = '${{ steps.webhook.outputs.output }}' | ConvertFrom-Json
+          echo $output
