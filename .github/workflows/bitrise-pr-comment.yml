@@ -20,7 +20,7 @@ jobs:
         run: |
           curl_pr_data=$(curl -H "Accept: application/vnd.github.v3+json" \
             ${{ github.event.issue.pull_request.url }} | jq '.head')
-          echo "::set-output name=branch::${{ fromJson(curl_pr_data) }}"
+          echo "::set-output name=branch::${{ fromJson($curl_pr_data) }}"
       - name: Get PR informations
         id: pr_data
         run: |
