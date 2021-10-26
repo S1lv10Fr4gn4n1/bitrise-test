@@ -20,7 +20,6 @@ jobs:
           script: |
             const result = await github.request("${{ github.event.issue.pull_request.url }}")
             return result.data.head
-            result-encoding: json
 
       - name: Get PR informations
         id: pr_data
