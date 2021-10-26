@@ -17,7 +17,7 @@ jobs:
         id: pr_data
         run: |
           echo ">>>>> test"
-          echo ">>>> ${steps.curl_data.outputs.json}"
+          # echo ">>>> ${steps.curl_data.outputs.json}"
           
           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
