@@ -17,11 +17,9 @@ jobs:
 
       - name: Curl Github API Request
         id: curl_response
-        run: |  
-          curl_request
-          # PR_URL=${{ github.event.issue.pull_request.url }}
+        run: |
           curl -H "Accept: application/vnd.github.v3+json" \
-            ${{ github.event.issue.pull_request.url }} | jq '.head.ref'
+            ${{ github.event.issue.pull_request.url }} | jq '.head'
       - name: Get PR informations
         id: pr_data
         run: |
