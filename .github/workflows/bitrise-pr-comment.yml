@@ -16,16 +16,16 @@ jobs:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Curl Github API Request
-        id: curl_response
+        id: curl_data
         run: |
-          curl_pr_data=$(curl -H "Accept: application/vnd.github.v3+json" \
+          pr_json=$(curl -H "Accept: application/vnd.github.v3+json" \
             ${{ github.event.issue.pull_request.url }} | jq '.head')
-          echo "::set-output name=branch::${{ fromJson($curl_pr_data) }}"
+          echo "::set-output name=pr::${{ fromJson(${pr_json}) }}"
       - name: Get PR informations
         id: pr_data
         run: |
-          echo "::set-output name=branch::${{ fromJson(steps.curl_response.outputs).ref }}"
-          echo "::set-output name=sha::${{ fromJson(steps.curl_response.outputs).sha }}"
+          echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs).ref }}"
+          echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs).sha }}"
       - name: PR comment
         run: |
           COMMENT="${{ github.event.comment.body }}"
