@@ -18,8 +18,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
-          script: | 
-            return "I will be string (not JSON) encoded!"
+          script: return "I will be string (not JSON) encoded!"
 #           const result = await github.request("${{ github.event.issue.pull_request.url }}")
 #           return result.data.head
 
@@ -27,8 +26,9 @@ jobs:
         id: pr_data
         run: |
           echo ">>>>> test"
+          echo ">>>>> ${{ steps.pr_head.outputs.result }}"
           # echo ">>>> ${{ fromJson(steps.pr_head.outputs.result) }}"
-          
+
           # echo "::set-output name=branch::${{ fromJson(steps.curl_data.outputs.pr).ref }}"
           # echo "::set-output name=sha::${{ fromJson(steps.curl_data.outputs.pr).sha }}"
 
