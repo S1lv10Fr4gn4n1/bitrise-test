@@ -21,7 +21,7 @@ jobs:
             // const head_sha = context.payload.pull_request.head.sha
             // console.log(head_ref)
             // console.log(head_sha)
-            console.log(github)
+            console.log(github.sha)
 
 #       - name: Get PR informations
 #         id: pr_data
