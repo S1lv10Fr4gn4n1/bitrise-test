@@ -17,8 +17,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const diff_url = context.payload.pull_request.diff_url
-            const result = await github.request(diff_url)
+            const result = await github.request("${{ github.event.issue.pull_request.url }}")
             console.log(result)
 
 #       - name: Get PR informations
