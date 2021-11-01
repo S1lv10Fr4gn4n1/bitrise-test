@@ -23,11 +23,11 @@ jobs:
 
       - name: PR comment
         run: |
-          COMMENT="${{ github.event.comment.body }}"
+          COMMENT_ORIG="${{ github.event.comment.body }}"
           
-          COMMENT_LOWERCASE=${COMMENT,,}
+          COMMENT=${COMMENT_ORIG,,}
           
-          echo "orig ${COMMENT} new ${COMMENT_LOWERCASE}"
+          echo "orig ${COMMENT_ORIG} new ${COMMENT}"
           
           WORKFLOW=""
           if [ "$COMMENT" = "run tests" ]; then
