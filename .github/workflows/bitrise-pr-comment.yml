@@ -25,6 +25,10 @@ jobs:
         run: |
           COMMENT="${{ github.event.comment.body }}"
           
+          COMMENT_LOWERCASE=${COMMENT,,}
+          
+          echo "orig ${COMMENT} new ${COMMENT_LOWERCASE}"
+          
           WORKFLOW=""
           if [ "$COMMENT" = "run tests" ]; then
             WORKFLOW="pr-jobs" 
