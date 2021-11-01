@@ -34,7 +34,7 @@ jobs:
             WORKFLOW="pr-jobs" 
           elif [ "$COMMENT" = "make app" ]; then
             WORKFLOW="build-app"
-          elif [ "$COMMENT" = "unit test" ]; then
+          elif [ "$COMMENT" = "run unit test" ]; then
             WORKFLOW="unit-test"
           fi
           
