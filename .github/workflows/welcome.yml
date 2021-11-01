@@ -16,10 +16,11 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const commentBody = '👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow using the following commands \
-              `run tests` to run `pr-jobs` \
-              `make app` to run `build-app` \
-              `unit test` to run `unit-test`'
+            const commentBody = '👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow \
+              using the following commands\n\n \
+              `run tests` to run `pr-jobs`\n \
+              `make app` to run `build-app`\n \
+              `unit test` to run `unit-test`\n'
               
             github.issues.createComment({
               issue_number: context.issue.number,
