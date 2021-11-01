@@ -4,7 +4,7 @@ on: issue_comment
 jobs:
   pr_commented:
     # This job only runs for pull request comments
-    if: ${{ github.event_name == 'issue_comment' && (startsWith(github.event.comment.body, "make") || startsWith(github.event.comment.body, "run")) }}
+    if: ${{ github.event_name == 'issue_comment' && (startsWith(github.event.comment.body, 'make') || startsWith(github.event.comment.body, 'run')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
