@@ -20,7 +20,7 @@ jobs:
               using the following commands\n\n \
               `run tests` to run `pr-jobs`\n \
               `make app` to run `build-app`\n \
-              `unit test` to run `unit-test`\n'
+              `run unit test` to run `unit-test`\n'
               
             github.issues.createComment({
               issue_number: context.issue.number,
