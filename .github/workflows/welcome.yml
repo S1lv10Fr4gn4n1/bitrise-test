@@ -20,5 +20,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow using the following commands\n`run tests` to run `pr-jobs`\n`make app` to run `build-app`\n`unit test` to run `unit-test`"
+              body: "👋 Hello @${{ github.actor }}, you can re-run Bitrise workflow using the following 
+              commands\n`run tests` to run `pr-jobs`\n`make app` to run `build-app`\n
+              `unit test` to run `unit-test`"
             })
