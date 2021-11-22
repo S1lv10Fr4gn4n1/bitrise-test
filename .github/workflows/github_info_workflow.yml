@@ -1,0 +1,19 @@
+# Dumps the full GITHUB_CONTEXT, useful for debugging.
+# Triggered by issuing a comment: `github_info`
+name: Dump GitHub context
+
+on: issue_comment
+
+jobs:
+  pr_commented:
+    if: ${{ github.event_name == 'issue_comment' && github.event.comment.body == 'github_info' }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: dump-context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "PR Number -> ${{ github.event.pull_request.number }}"
+          echo "Branch Name -> ${{ github.event.pull_request.head.ref }}"
+          echo "PR Title -> ${{ github.event.pull_request.title }}"
+          echo "Author -> ${{ github.event.pull_request.user.login }}"
