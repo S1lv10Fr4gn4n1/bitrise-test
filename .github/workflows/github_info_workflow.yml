@@ -13,7 +13,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
-          echo "PR Number -> ${{ toJson(github.event.pull_request).number }}"
-          echo "Branch Name -> ${{ toJson(github.event.pull_request).ref }}"
-          echo "PR Title -> ${{ toJson(github.event.pull_request).title }}"
-          echo "Author -> ${{ toJson(github.event.pull_request).login }}"
+          echo "test ${github.event.issue.pull_request}"
+          echo "PR Number -> ${{ toJson(github.event.issue.pull_request).number }}"
+          echo "Branch Name -> ${{ toJson(github.event.issue.pull_request).ref }}"
+          echo "PR Title -> ${{ toJson(github.event.issue.pull_request).title }}"
+          echo "Author -> ${{ toJson(github.event.issue.pull_request).login }}"
